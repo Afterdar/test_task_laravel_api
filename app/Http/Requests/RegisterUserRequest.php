@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Http\Requests\BaseRequest;
 use Exception;
 
-class RegisterUser extends BaseRequest
+class RegisterUserRequest extends BaseRequest
 {
     public function rules(): array
     {

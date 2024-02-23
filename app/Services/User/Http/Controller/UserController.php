@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\User\Http\Controller;
 
-use App\Http\Requests\RegisterUser;
+use App\Http\Requests\RegisterUserRequest;
 use App\Services\User\Database\Repository\UserRepository;
 use Exception;
 use Gerfey\ResponseBuilder\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends BaseController
 {
@@ -19,7 +20,12 @@ class UserController extends BaseController
         $this->userRepository = $userRepository;
     }
 
-    public function register(RegisterUser $request): JsonResponse
+    public function setCookie(): JsonResponse
+    {
+        return ResponseBuilder::success();
+    }
+
+    public function register(RegisterUserRequest $request): JsonResponse
     {
         $user = $this->userRepository->addUser($request);
 
@@ -33,5 +39,10 @@ class UserController extends BaseController
     public function login(): JsonResponse
     {
         return ResponseBuilder::success();
+    }
+
+    public function test()
+    {
+        return ResponseBuilder::success(['wqe']);
     }
 }

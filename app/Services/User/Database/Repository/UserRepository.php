@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace App\Services\User\Database\Repository;
 
-use App\Http\Requests\RegisterUser;
+use App\Http\Requests\AccessTokenRequest;
+use App\Http\Requests\RegisterUserRequest;
 use App\Services\User\Database\Models\User;
 use Carbon\Carbon;
 use Gerfey\Repository\Repository;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository extends Repository
 {
     protected $entity = User::class;
 
-    public function addUser(RegisterUser $request): bool
+    public function addUser(RegisterUserRequest $request): bool
     {
         return $this->createQueryBuilder()
             ->insert([
@@ -26,4 +29,10 @@ class UserRepository extends Repository
             ]);
     }
 
+    public function getUserByEmail(AccessTokenRequest $request): Model|Builder|null
+    {
+        return $this->createQueryBuilder()
+            ->where('email', '=', $request['email'])
+            ->first();
+    }
 }
