@@ -9,7 +9,6 @@ use App\Http\Requests\RegisterUserRequest;
 use App\Services\User\Database\Models\User;
 use Carbon\Carbon;
 use Gerfey\Repository\Repository;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
@@ -29,7 +28,7 @@ class UserRepository extends Repository
             ]);
     }
 
-    public function getUserByEmail(AccessTokenRequest $request): Model|Builder|null
+    public function getUserByEmail(AccessTokenRequest|RegisterUserRequest $request): Model|null
     {
         return $this->createQueryBuilder()
             ->where('email', '=', $request['email'])

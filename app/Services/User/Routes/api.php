@@ -10,8 +10,9 @@ Route::prefix('v1')->group(
     function (): void {
         Route::prefix('users')->group(
             function (): void {
-                Route::get('/sanctum/csrf-cookie', [UserController::class, 'setCookie']);
-                Route::post('/register', [UserController::class, 'register']);
+                Route::post('/register', [UserController::class, 'register'])->middleware('guest');
+                Route::post('/login', [UserController::class, 'login'])->middleware('guest');
+                Route::delete('/logout', [UserController::class, 'logout'])->middleware('auth');
 
                 Route::post('/getToken', [PersonalAccessTokenController::class, 'getToken']);
 
@@ -19,11 +20,12 @@ Route::prefix('v1')->group(
         );
     }
 );
+
 Route::middleware('auth:sanctum')->prefix('v1')->group(
     function (): void {
-        Route::prefix('users')->group(
+        Route::prefix('token')->group(
             function (): void {
-                Route::get('/test', [UserController::class, 'test']);
+                Route::get('/testAuthApi', [UserController::class, 'testAuthApi']);
 
                 Route::delete('/deleteToken/{token}', [PersonalAccessTokenController::class, 'deleteToken']);
             }

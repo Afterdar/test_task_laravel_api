@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Services\User\Http\Controller;
 
+use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Services\User\Database\Repository\UserRepository;
 use Exception;
 use Gerfey\ResponseBuilder\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends BaseController
 {
@@ -20,29 +23,47 @@ class UserController extends BaseController
         $this->userRepository = $userRepository;
     }
 
-    public function setCookie(): JsonResponse
-    {
-        return ResponseBuilder::success();
-    }
-
     public function register(RegisterUserRequest $request): JsonResponse
     {
-        $user = $this->userRepository->addUser($request);
+        $createUser = $this->userRepository->addUser($request);
 
-        if ($user === false) {
+        if ($createUser === false) {
             throw new Exception('Произошла ошибка регистрации пользователя');
         }
 
-        return ResponseBuilder::success();
+        $user = $this->userRepository->getUserByEmail($request);
+
+        return ResponseBuilder::success([$user]);
     }
 
-    public function login(): JsonResponse
+    public function login(LoginUserRequest $request): JsonResponse
     {
-        return ResponseBuilder::success();
+        $credentials = [
+            'email' => $request['email'],
+            'password' => $request['password']
+        ];
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return ResponseBuilder::success(['Успешный вход']);
+        }
+
+        return ResponseBuilder::error('Ошибка входа, неверная почта или пароль');
     }
 
-    public function test()
+    public function logout(Request $request): JsonResponse
     {
-        return ResponseBuilder::success(['wqe']);
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerate();
+
+        return ResponseBuilder::success(['Успешно вышли из системы']);
+    }
+
+    public function testAuthApi(): JsonResponse
+    {
+        return ResponseBuilder::success(['qwe']);
     }
 }
