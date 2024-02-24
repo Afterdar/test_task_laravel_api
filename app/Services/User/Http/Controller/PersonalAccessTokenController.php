@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\User\Http\Controller;
 
-use App\Http\Requests\AccessTokenRequest;
-use App\Services\User\Database\Models\User;
+use App\Http\Requests\User\AccessTokenRequest;
 use App\Services\User\Database\Repository\UserRepository;
 use Gerfey\ResponseBuilder\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;

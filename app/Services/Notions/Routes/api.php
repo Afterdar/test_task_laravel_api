@@ -10,7 +10,10 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(
         Route::prefix('notions')->group(
             function (): void {
                 Route::get('/list', [NotionsController::class, 'getListNotions']);
-                Route::get('/detail', [NotionsController::class, 'getNotionById']);
+                Route::get('/detail/{id}', [NotionsController::class, 'getNotionById']);
+                Route::post('/addNotion', [NotionsController::class, 'addNotion']);
+                Route::put('/updateNotion/{id}', [NotionsController::class, 'updateNotion']);
+                Route::delete('/deleteNotion/{id}', [NotionsController::class, 'deleteNotion']);
             }
         );
     }

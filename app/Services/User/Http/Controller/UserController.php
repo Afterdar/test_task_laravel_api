@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\User\Http\Controller;
 
-use App\Http\Requests\LoginUserRequest;
-use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\User\LoginUserRequest;
+use App\Http\Requests\User\RegisterUserRequest;
 use App\Services\User\Database\Repository\UserRepository;
 use Exception;
 use Gerfey\ResponseBuilder\ResponseBuilder;

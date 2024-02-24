@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Http\Requests;
+declare(strict_types=1);
+
+namespace App\Http\Requests\User;
 
 use App\Http\Requests\BaseRequest;
 use Exception;
 
-class LoginUserRequest extends BaseRequest
+class RegisterUserRequest extends BaseRequest
 {
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', 'max:50'],
+            'name' => ['required', 'max:50'],
+            'email' => ['required', 'unique:users', 'max:50'],
             'password' => ['required', 'min:6'],
         ];
     }
@@ -21,8 +24,11 @@ class LoginUserRequest extends BaseRequest
     public function messages(): array
     {
         return [
+            'name.required' => $this->getMessage('required'),
+            'name.max' => $this->getMessage('max'),
+
             'email.required' => $this->getMessage('required'),
-            'email.email' => $this->getMessage('email'),
+            'email.unique' => $this->getMessage('unique'),
             'email.max' => $this->getMessage('max'),
 
             'password.required' => $this->getMessage('required'),
